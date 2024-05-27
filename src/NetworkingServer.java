@@ -1,20 +1,20 @@
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
+import java.io.*;
+
 
 public class NetworkingServer {
     public static void main(String[] args) {
         ServerSocket server = null;
         Socket client;
 
-        int portnummer = 1234;
+        int portnummer = 60000;
         if (args.length >= 1) {
             portnummer = Integer.parseInt(args[0]);
         }
 
         try {
             server = new ServerSocket(portnummer);
-        } catch (Exception e) {
+        } catch (Exception ie) {
             System.out.println("Cannot open socket." + ie);
             System.exit(1);
         }
@@ -35,7 +35,6 @@ public class NetworkingServer {
 
                 String msgFromClient = br.readLine();
                 System.out.println("Message received from client = " + msgFromClient);
-
                 if (msgFromClient != null && !msgFromClient.equalsIgnoreCase("bye")) {
 
                     OutputStream clientOut = client.getOutputStream();
@@ -43,7 +42,6 @@ public class NetworkingServer {
                     String ansMsg = "Hello, " + msgFromClient;
                     pw.println(ansMsg);
                 }
-
                 if (msgFromClient != null && msgFromClient.equalsIgnoreCase("bye")) {
                     server.close();
                     client.close();
